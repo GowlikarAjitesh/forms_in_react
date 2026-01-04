@@ -1,5 +1,6 @@
 import React from "react";
 import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 async function submitForm(prevState, formData){
   console.log("prev state", prevState);
   let userDetails={
@@ -14,6 +15,15 @@ async function submitForm(prevState, formData){
 
   console.log("user data sent successfully...", userDetails);
   console.log("Form Data type = ", typeof formData);
+}
+export function SubmitButton(){
+  const { pending, data, method, action } = useFormStatus();
+  console.log("This is form data: ", data);
+  console.log("This is method: ", method);
+  console.log("This is from action: ", action);
+  return (
+    <button type="submit" disabled={pending}>{pending ? "submitting..." : "Submit"}</button>
+  );
 }
 export default function React19Forms() {
   const [state, formAction, isPending] = useActionState(submitForm, {});
@@ -71,9 +81,10 @@ export default function React19Forms() {
           id="confirmPassword"
           placeholder="Re-enter your password"
         />
-        <button type="submit" disabled={isPending}>
+        {/* <button type="submit" disabled={isPending}>
           {isPending ? "submitting..." : "Submit"}
-        </button>
+        </button> */}
+        <SubmitButton/>
       </form>
     </div>
   );
